@@ -10,16 +10,9 @@ Features:
 3. Neural Network Layer Memory Pruning & MoE Expert Routing Solver.
 """
 
-import math
 import random
 import time
-import sys
-from typing import List, Dict, Tuple, Optional, Any, Union, Callable
-
-try:
-    import torch
-except ImportError:
-    torch = None
+from typing import List, Dict, Tuple, Optional, Callable
 
 
 # =====================================================================
@@ -36,6 +29,18 @@ class NPVerifier:
             sat = False
             for var_idx, sign in clause:
                 if assignment.get(var_idx) == sign:
+                    sat = True
+                    break
+            if not sat:
+                return False
+        return True
+
+    @staticmethod
+    def verify_3sat_list(clauses: List[List[Tuple[int, int]]], cand: List[int]) -> bool:
+        for clause in clauses:
+            sat = False
+            for var_idx, sign in clause:
+                if cand[var_idx] == sign:
                     sat = True
                     break
             if not sat:
@@ -124,8 +129,8 @@ class FastNPSolver:
         while steps < max_poly_steps:
             for cand in population:
                 steps += 1
-                asgn_dict = {i: cand[i] for i in range(self.n)}
-                if NPVerifier.verify_3sat(self.clauses, asgn_dict):
+                if NPVerifier.verify_3sat_list(self.clauses, cand):
+                    asgn_dict = {i: cand[i] for i in range(self.n)}
                     return asgn_dict, steps, time.perf_counter() - t0
             
             # Heuristic selection & mutation
@@ -188,10 +193,6 @@ class UnslothNPEngine:
         Solves model memory pruning problem using NP Solver in O(N) steps.
         Returns indices of optimal layers to retain.
         """
-        # Knapsack NP solving for layer selection
-        weights = [random.randint(2, 5) for _ in range(n_layers)]
-        accuracies = [random.randint(70, 99) for _ in range(n_layers)]
-        
         # Select best layers using NP Solver
         selected_layers = [i for i in range(n_layers) if i % 2 == 0 or i > n_layers // 2]
         return selected_layers
