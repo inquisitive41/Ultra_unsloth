@@ -43,7 +43,9 @@ export type VramFitStatus = "fits" | "tight" | "exceeds";
  */
 export const FP16_LOADING_BYTES = 2.0;
 
-export type TrainingMethod = "qlora" | "lora" | "full" | "cpt";
+import type { TrainingMethod } from "../types/training";
+
+export type { TrainingMethod };
 
 function usesQuantizedLoading(method: TrainingMethod, modelId?: string): boolean {
   if (method === "qlora") return true;

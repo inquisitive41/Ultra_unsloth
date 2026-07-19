@@ -15,8 +15,6 @@ sys.path.insert(0, os.path.abspath("."))
 from unsloth.np_engine import (
     UnslothNPEngine,
     FastNPSolver,
-    NPVerifier,
-    BooleanCircuit,
     UniversalNPReductor,
     get_np_reward_function,
 )

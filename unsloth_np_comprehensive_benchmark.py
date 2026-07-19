@@ -6,7 +6,6 @@ Comprehensive performance, scaling, throughput, and VRAM memory overhead benchma
 evaluating the integrated Unsloth P=NP Neuro-Symbolic Engine.
 """
 
-import math
 import random
 import sys
 import time
@@ -19,8 +18,6 @@ sys.path.insert(0, os.path.abspath("."))
 from unsloth.np_engine import (
     UnslothNPEngine,
     FastNPSolver,
-    NPVerifier,
-    BooleanCircuit,
     UniversalNPReductor,
     get_np_reward_function,
 )
